@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "299901235737",
+    "project_id": "bet-reminder-12651",
+    "storage_bucket": "bet-reminder-12651.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:299901235737:android:8c459518b91ef5d1fb7088",
+        "android_client_info": {
+          "package_name": "hu.havasig.betreminder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "299901235737-k30gej61estic26o558hhp7t54nb0d2m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtg8LsghGGRlTuASOoIITn4bOR2wG6nMg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "299901235737-k30gej61estic26o558hhp7t54nb0d2m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
