@@ -5,6 +5,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
@@ -17,6 +19,7 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -31,16 +34,20 @@ import androidx.navigation.NavController
 import hu.havasig.betreminder.Auth
 import hu.havasig.betreminder.android.AndroidUserViewModel
 import hu.havasig.betreminder.android.navigation.Screens
+import hu.havasig.betreminder.presenter.KMPBetPresenter
 import hu.havasig.betreminder.presenter.KMPUserPresenter
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.get
 import org.koin.androidx.compose.koinViewModel
+import dev.gitlive.firebase.firestore.DocumentSnapshot
+
 
 @Composable
 fun LoginScreen(
     navController: NavController,
     viewModel: AndroidUserViewModel = koinViewModel(),
-    presenter: KMPUserPresenter = get()
+    presenter: KMPUserPresenter = get(),
+    betPresenter: KMPBetPresenter = get()
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -48,6 +55,12 @@ fun LoginScreen(
     var password by rememberSaveable { mutableStateOf("") }
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
 
+    val bets = produceState(
+        initialValue = emptyList<DocumentSnapshot>(),
+        producer = {
+            value = betPresenter.getMyBets()
+        }
+    )
 
     Column(
         modifier = Modifier
@@ -110,6 +123,12 @@ fun LoginScreen(
         }) {
             Text(text = "login")
         }
-        Text(text = presenter.sayHello() + "\n\n" + viewModel.sayHello())
+        Text(text = presenter.sayHello() + "\n\n" + viewModel.sayHello() + "\n\n")
+
+        LazyColumn {
+            items(items = bets.value, itemContent = {
+                Text(text = it.android.data.toString())
+            })
+        }
     }
 }

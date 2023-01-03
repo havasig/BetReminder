@@ -5,8 +5,9 @@ package hu.havasig.betreminder.data
  */
 
 interface UserRepository {
-    fun findUser(name : String): User?
-    fun addUsers(users : List<User>)
+
+    fun findUser(name: String): User?
+    fun addUsers(users: List<User>)
 }
 
 class UserRepositoryImpl : UserRepository {
@@ -17,7 +18,7 @@ class UserRepositoryImpl : UserRepository {
         return _users.firstOrNull { it.name == name }
     }
 
-    override fun addUsers(users : List<User>) {
+    override fun addUsers(users: List<User>) {
         _users.addAll(users)
     }
 }

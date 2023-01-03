@@ -22,6 +22,7 @@ kotlin {
     }
 
     val ktorVersion = "2.1.2"
+    val gitliveVersion = "1.6.2"
 
     sourceSets {
         val commonMain by getting {
@@ -31,7 +32,9 @@ kotlin {
                 implementation("io.ktor:ktor-client-core:$ktorVersion")
                 implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
                 implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
-                implementation("dev.gitlive:firebase-auth:1.6.2")
+                implementation("dev.gitlive:firebase-auth:$gitliveVersion")
+                implementation("dev.gitlive:firebase-firestore:$gitliveVersion")
+
                 with(Deps.Koin) {
                     api(core)
                     api(test)
@@ -46,6 +49,7 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 implementation("io.ktor:ktor-client-android:$ktorVersion")
+
                 with(Deps.Koin) {
                     api(android)
                     api(androidCompose)
