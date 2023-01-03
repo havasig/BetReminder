@@ -37,12 +37,14 @@ import hu.havasig.betreminder.presenter.KMPUserPresenter
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.get
 import org.koin.androidx.compose.koinViewModel
+import org.koin.core.component.getScopeId
 
 @Composable
 fun LoginScreen(
     navController: NavController,
     viewModel: AndroidUserViewModel = koinViewModel(),
     presenter: KMPUserPresenter = get(),
+    betPresenter: KMPBetPresenter = get()
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -103,6 +105,8 @@ fun LoginScreen(
                 try {
                     Auth().loginUser(email, password)
                     Toast.makeText(context, "Success", Toast.LENGTH_LONG).show()
+                    val me = presenter.loadMe()
+                    betPresenter.loadMyBets(me.id)
                     navController.navigate(Screens.Home.route)
                 } catch (e: Exception) {
                     Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()

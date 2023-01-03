@@ -19,6 +19,7 @@ import kotlinx.datetime.toLocalDateTime
 interface BetRepository {
 
     suspend fun getBets(userId: String): MutableList<DocumentSnapshot>
+    suspend fun loadMyBets(userId: String)
     fun addBet(bet: Bet)
 }
 
@@ -26,6 +27,7 @@ class BetRepositoryImpl : BetRepository {
     private val _db = Firebase.firestore
 
     private val _bets = mutableListOf<DocumentSnapshot>()
+    private val _myBets = mutableListOf<DocumentSnapshot>()
 
     override suspend fun getBets(userId: String): MutableList<DocumentSnapshot> {
 
@@ -40,6 +42,16 @@ class BetRepositoryImpl : BetRepository {
         )
 
         return _bets
+    }
+
+    override suspend fun loadMyBets(userId: String) {
+        _myBets.clear()
+        _myBets.addAll(
+            _db.collection("bets")
+                .where("participants", arrayContains = userId)
+                .get()
+                .documents
+        )
     }
 
     override fun addBet(bet: Bet) {
