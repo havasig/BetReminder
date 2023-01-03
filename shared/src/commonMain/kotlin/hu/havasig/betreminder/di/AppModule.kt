@@ -6,6 +6,7 @@ import hu.havasig.betreminder.data.UserRepository
 import hu.havasig.betreminder.data.UserRepositoryImpl
 import hu.havasig.betreminder.presenter.KMPBetPresenter
 import hu.havasig.betreminder.presenter.KMPUserPresenter
+import io.ktor.util.logging.KtorSimpleLogger
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module

@@ -32,6 +32,7 @@ import androidx.navigation.NavController
 import hu.havasig.betreminder.Auth
 import hu.havasig.betreminder.android.AndroidUserViewModel
 import hu.havasig.betreminder.android.navigation.Screens
+import hu.havasig.betreminder.presenter.KMPBetPresenter
 import hu.havasig.betreminder.presenter.KMPUserPresenter
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.get

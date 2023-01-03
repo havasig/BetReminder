@@ -38,7 +38,7 @@ fun HomeScreen(
     val bets = produceState(
         initialValue = emptyList<DocumentSnapshot>(),
         producer = {
-            value = betPresenter.getMyBets()
+            value = betPresenter.getBets("iFEFVKFU77OhopXp1sjL")
         }
     )
 

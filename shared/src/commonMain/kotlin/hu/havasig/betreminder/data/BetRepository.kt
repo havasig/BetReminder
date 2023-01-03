@@ -4,6 +4,9 @@ import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.firestore.DocumentSnapshot
 import dev.gitlive.firebase.firestore.firestore
 import dev.gitlive.firebase.firestore.where
+import io.ktor.util.logging.KtorSimpleLogger
+import io.ktor.util.logging.Logger
+import io.ktor.util.logging.error
 import kotlinx.coroutines.runBlocking
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
@@ -25,11 +28,17 @@ class BetRepositoryImpl : BetRepository {
     private val _bets = mutableListOf<DocumentSnapshot>()
 
     override suspend fun getBets(userId: String): MutableList<DocumentSnapshot> {
-        _bets.clear()
-        val a: DocumentSnapshot = _db.collection("bets").where("name", "My first bet").get().documents.first()
-        println("id value: $a")
+
         //_bets.add(_db.collection("bets").where("name", "My first bet"))
-        _bets.add(a)
+
+        _bets.clear()
+        _bets.addAll(
+            _db.collection("bets")
+                .where("participants", arrayContains = userId)
+                .get()
+                .documents
+        )
+
         return _bets
     }
 
