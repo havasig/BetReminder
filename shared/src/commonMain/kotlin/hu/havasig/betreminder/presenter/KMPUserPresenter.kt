@@ -16,4 +16,12 @@ class KMPUserPresenter(private val repository: UserRepository) {
     suspend fun loadMe(): DocumentSnapshot {
         return repository.loadMe()
     }
+
+    suspend fun findUserListId(userIds: List<String>): List<DocumentSnapshot> {
+        return repository.findUserListId(userIds)
+    }
+
+    suspend fun findBetParticipants(bet: DocumentSnapshot): List<DocumentSnapshot> {
+        return repository.findUserListId(bet.get("participants"))
+    }
 }

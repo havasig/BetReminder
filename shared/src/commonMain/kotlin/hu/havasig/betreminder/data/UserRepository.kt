@@ -16,6 +16,10 @@ interface UserRepository {
     fun findUser(name: String): User?
     fun addUsers(users: List<User>)
 
+    suspend fun findUserById(userId: String): DocumentSnapshot
+
+    suspend fun findUserListId(userIds: List<String>): List<DocumentSnapshot>
+
     @Throws(NullPointerException::class, CancellationException::class)
     suspend fun loadMe(): DocumentSnapshot
 }
@@ -40,5 +44,17 @@ class UserRepositoryImpl : UserRepository {
             Firebase.auth.currentUser?.uid ?: throw NullPointerException("Firebase current user is null")
         _me = _db.collection("users").where("firebaseId", currentUserId).get().documents.first()
         return _me
+    }
+
+    override suspend fun findUserById(userId: String): DocumentSnapshot {
+        return _db.collection("users").document(userId).get()
+    }
+
+    override suspend fun findUserListId(userIds: List<String>): List<DocumentSnapshot> {
+        val results = mutableListOf<DocumentSnapshot>()
+        for (userId in userIds) {
+            results.add(_db.collection("users").document(userId).get())
+        }
+        return results
     }
 }
