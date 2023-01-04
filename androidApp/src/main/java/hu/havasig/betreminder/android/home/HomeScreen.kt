@@ -12,8 +12,14 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
@@ -42,55 +48,73 @@ fun HomeScreen(
         }
     )
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-
-        LazyColumn {
-            items(items = bets.value, itemContent = { bet ->
-                bet.android.data?.let { it1 -> BetRow(bet = it1) }
-            })
-        }
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp),
-            horizontalArrangement = Arrangement.Center
-        ) {
-            Text(
-                text = "Home Screen",
-                fontSize = MaterialTheme.typography.h3.fontSize,
-                fontWeight = FontWeight.Bold
-            )
-        }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp),
-            horizontalArrangement = Arrangement.Center
-        ) {
-            Button(
-                shape = MaterialTheme.shapes.medium,
-                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Black),
-                modifier = Modifier.padding(5.dp),
-                onClick = {
-                    // Navigate to Details
-                    navController.navigate(Screens.Detail.route)
+    Scaffold(
+        topBar = {
+            TopAppBar(title = { Text("Bets") })
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = { /*TODO*/ },
+                content = {
+                    Icon(
+                        Icons.Filled.Add,
+                        contentDescription = "Create bet",
+                    )
                 }
+            )
+        },
+    )
+    {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.White),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            LazyColumn {
+                items(items = bets.value, itemContent = { bet ->
+                    bet.android.data?.let { it1 -> BetRow(bet = it1) }
+                })
+            }
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp),
+                horizontalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = "Go to Details",
-                    modifier = Modifier.padding(5.dp),
-                    style = MaterialTheme.typography.button.copy(
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White
-                    )
+                    text = "Home Screen",
+                    fontSize = MaterialTheme.typography.h3.fontSize,
+                    fontWeight = FontWeight.Bold
                 )
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Button(
+                    shape = MaterialTheme.shapes.medium,
+                    colors = ButtonDefaults.buttonColors(backgroundColor = Color.Black),
+                    modifier = Modifier.padding(5.dp),
+                    onClick = {
+                        // Navigate to Details
+                        navController.navigate(Screens.Detail.route)
+                    }
+                ) {
+                    Text(
+                        text = "Go to Details",
+                        modifier = Modifier.padding(5.dp),
+                        style = MaterialTheme.typography.button.copy(
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White
+                        )
+                    )
+                }
             }
         }
     }
