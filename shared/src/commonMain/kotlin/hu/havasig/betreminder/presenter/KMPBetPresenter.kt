@@ -9,6 +9,10 @@ class KMPBetPresenter(private val repository: BetRepository) {
         return repository.getBets(userId)
     }
 
+    suspend fun getBetById(betId: String) : DocumentSnapshot? {
+        return repository.getBetById(betId)
+    }
+
     suspend fun loadMyBets(userId: String) {
         repository.getBets(userId)
     }

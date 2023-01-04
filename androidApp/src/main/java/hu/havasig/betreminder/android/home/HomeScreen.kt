@@ -75,7 +75,7 @@ fun HomeScreen(
 
             LazyColumn {
                 items(items = bets.value, itemContent = { bet ->
-                    bet.android.data?.let { it1 -> BetRow(bet = it1) }
+                    BetRow(bet, navController)
                 })
             }
 
@@ -91,40 +91,17 @@ fun HomeScreen(
                     fontWeight = FontWeight.Bold
                 )
             }
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Button(
-                    shape = MaterialTheme.shapes.medium,
-                    colors = ButtonDefaults.buttonColors(backgroundColor = Color.Black),
-                    modifier = Modifier.padding(5.dp),
-                    onClick = {
-                        // Navigate to Details
-                        navController.navigate(Screens.Detail.route)
-                    }
-                ) {
-                    Text(
-                        text = "Go to Details",
-                        modifier = Modifier.padding(5.dp),
-                        style = MaterialTheme.typography.button.copy(
-                            fontWeight = FontWeight.Bold,
-                            color = Color.White
-                        )
-                    )
-                }
-            }
         }
     }
 }
 
 @Composable
 fun BetRow(
-    bet: MutableMap<String, Any>
+    bett: DocumentSnapshot,
+    navController: NavController,
 ) {
     Column(modifier = Modifier.wrapContentHeight()) {
+        val bet = bett.android.data!!
 
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -145,7 +122,11 @@ fun BetRow(
                 Text(text = bet["description"] as String)
             }
 
-            Button(onClick = { /*TODO*/ }) {
+            Button(
+                onClick = {
+                    // Navigate to Details
+                    navController.navigate(Screens.Detail.route + "/" + bett.id)
+                }) {
 
                 Text(
                     text = "Inspect",

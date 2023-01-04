@@ -19,6 +19,7 @@ import kotlinx.datetime.toLocalDateTime
 interface BetRepository {
 
     suspend fun getBets(userId: String): MutableList<DocumentSnapshot>
+    suspend fun getBetById(betId: String): DocumentSnapshot?
     suspend fun loadMyBets(userId: String)
     fun addBet(bet: Bet)
 }
@@ -42,6 +43,11 @@ class BetRepositoryImpl : BetRepository {
         )
 
         return _bets
+    }
+
+    override suspend fun getBetById(betId: String): DocumentSnapshot? {
+        // TODO loadMyBets("userId: String")
+        return _bets.find { it.id == betId }
     }
 
     override suspend fun loadMyBets(userId: String) {
