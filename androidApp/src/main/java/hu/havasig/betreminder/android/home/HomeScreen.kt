@@ -55,7 +55,11 @@ fun HomeScreen(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { /*TODO*/ },
+                onClick = {
+
+                    navController.navigate(Screens.Create.route)
+
+                },
                 content = {
                     Icon(
                         Icons.Filled.Add,
@@ -113,7 +117,6 @@ fun BetRow(
 
                 Text(text = bet["title"].toString())
 
-                // Row { Text(text = bet["participants"].toString()) }
                 val date = (bet["date"] as Timestamp).toDate()
                 val sdf = SimpleDateFormat("MM/dd/yyyy")
                 val formattedDate = sdf.format(date).toString()
@@ -124,11 +127,7 @@ fun BetRow(
             }
 
             Button(
-                onClick = {
-                    // Navigate to Details
-                    navController.navigate(Screens.Detail.route + "/" + bett.id)
-                }) {
-
+                onClick = { navController.navigate(Screens.Detail.route + "/" + bett.id) }) {
                 Text(
                     text = "Inspect",
                     modifier = Modifier.padding(5.dp),

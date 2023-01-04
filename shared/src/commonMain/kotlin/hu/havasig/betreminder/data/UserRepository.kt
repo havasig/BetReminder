@@ -13,12 +13,15 @@ import kotlin.coroutines.cancellation.CancellationException
 
 interface UserRepository {
 
-    fun findUser(name: String): User?
+    fun getUser(name: String): User?
     fun addUsers(users: List<User>)
 
-    suspend fun findUserById(userId: String): DocumentSnapshot
+    suspend fun getUserById(userId: String): DocumentSnapshot
 
-    suspend fun findUserListId(userIds: List<String>): List<DocumentSnapshot>
+    suspend fun getUserListId(userIds: List<String>): List<DocumentSnapshot>
+
+    @Throws(NullPointerException::class, CancellationException::class)
+    suspend fun getFriendUserList(): List<DocumentSnapshot>
 
     @Throws(NullPointerException::class, CancellationException::class)
     suspend fun loadMe(): DocumentSnapshot
@@ -30,7 +33,7 @@ class UserRepositoryImpl : UserRepository {
 
     private val _users = arrayListOf<User>()
 
-    override fun findUser(name: String): User? {
+    override fun getUser(name: String): User? {
         return _users.firstOrNull { it.name == name }
     }
 
@@ -46,15 +49,22 @@ class UserRepositoryImpl : UserRepository {
         return _me
     }
 
-    override suspend fun findUserById(userId: String): DocumentSnapshot {
+    override suspend fun getUserById(userId: String): DocumentSnapshot {
         return _db.collection("users").document(userId).get()
     }
 
-    override suspend fun findUserListId(userIds: List<String>): List<DocumentSnapshot> {
+    override suspend fun getUserListId(userIds: List<String>): List<DocumentSnapshot> {
         val results = mutableListOf<DocumentSnapshot>()
         for (userId in userIds) {
             results.add(_db.collection("users").document(userId).get())
         }
         return results
+    }
+
+    @Throws(NullPointerException::class, CancellationException::class)
+    override suspend fun getFriendUserList(): List<DocumentSnapshot> {
+        val currentUserId =
+            Firebase.auth.currentUser?.uid ?: throw NullPointerException("Firebase current user is null")
+        return _db.collection("users").where("name", "wwwwwwww", "a").get().documents
     }
 }

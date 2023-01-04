@@ -8,7 +8,7 @@ import kotlin.coroutines.cancellation.CancellationException
 class KMPUserPresenter(private val repository: UserRepository) {
     fun sayHello() : String {
         val name = DefaultData.DEFAULT_USER.name
-        val foundUser = repository.findUser(name)
+        val foundUser = repository.getUser(name)
         return foundUser?.let { "Hello '$it' from $this" } ?: "User '$name' not found!"
     }
 
@@ -17,11 +17,12 @@ class KMPUserPresenter(private val repository: UserRepository) {
         return repository.loadMe()
     }
 
-    suspend fun findUserListId(userIds: List<String>): List<DocumentSnapshot> {
-        return repository.findUserListId(userIds)
+    @Throws(NullPointerException::class, CancellationException::class)
+    suspend fun getFriendUserList(): List<DocumentSnapshot> {
+        return repository.getFriendUserList()
     }
 
-    suspend fun findBetParticipants(bet: DocumentSnapshot): List<DocumentSnapshot> {
-        return repository.findUserListId(bet.get("participants"))
+    suspend fun getBetParticipants(bet: DocumentSnapshot): List<DocumentSnapshot> {
+        return repository.getUserListId(bet.get("participants"))
     }
 }

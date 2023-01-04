@@ -6,6 +6,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import hu.havasig.betreminder.android.create.BetCreateScreen
 import hu.havasig.betreminder.android.details.BetDetailScreen
 import hu.havasig.betreminder.android.home.HomeScreen
 import hu.havasig.betreminder.android.login.LoginScreen
@@ -22,6 +23,9 @@ fun NavGraph(navController: NavHostController) {
         }
         composable(route = Screens.Home.route) {
             HomeScreen(navController)
+        }
+        composable(route = Screens.Create.route) {
+            BetCreateScreen()
         }
         composable(
             route = Screens.Detail.route + "/{betId}",

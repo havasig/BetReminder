@@ -42,7 +42,7 @@ fun BetDetailScreen(
 
     LaunchedEffect(Unit) {
         bet = betPresenter.getBetById(betId ?: "")
-        bet?.let { participants = userPresenter.findBetParticipants(bet!!) }
+        bet?.let { participants = userPresenter.getBetParticipants(bet!!) }
     }
 
     Scaffold(
