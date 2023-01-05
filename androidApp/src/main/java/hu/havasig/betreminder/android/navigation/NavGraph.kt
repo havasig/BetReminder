@@ -25,7 +25,7 @@ fun NavGraph(navController: NavHostController) {
             HomeScreen(navController)
         }
         composable(route = Screens.Create.route) {
-            BetCreateScreen()
+            BetCreateScreen(navController)
         }
         composable(
             route = Screens.Detail.route + "/{betId}",

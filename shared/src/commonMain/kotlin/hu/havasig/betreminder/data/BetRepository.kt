@@ -4,24 +4,26 @@ import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.firestore.DocumentSnapshot
 import dev.gitlive.firebase.firestore.firestore
 import dev.gitlive.firebase.firestore.where
-import io.ktor.util.logging.KtorSimpleLogger
-import io.ktor.util.logging.Logger
-import io.ktor.util.logging.error
-import kotlinx.coroutines.runBlocking
 import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 
-/**
- * Repository to provide a "Hello" data
- */
 
 interface BetRepository {
 
     suspend fun getBets(userId: String): MutableList<DocumentSnapshot>
     suspend fun getBetById(betId: String): DocumentSnapshot?
     suspend fun loadMyBets(userId: String)
-    fun addBet(bet: Bet)
+
+    suspend fun createBet(
+        title: String,
+        prize: String,
+        deadline: LocalDate,
+        description: String,
+        participants: List<Participant>,
+    ): Boolean
 }
 
 class BetRepositoryImpl : BetRepository {
@@ -60,18 +62,25 @@ class BetRepositoryImpl : BetRepository {
         )
     }
 
-    override fun addBet(bet: Bet) {
-        runBlocking {
-            _db.collection("bets").add(
+    override suspend fun createBet(
+        title: String,
+        prize: String,
+        deadline: LocalDate,
+        description: String,
+        participants: List<Participant>,
+    ): Boolean {
+        _db.collection("bets")
+            .add(
                 Bet(
-                    "",
-                    Clock.System.now().toLocalDateTime(TimeZone.UTC),
-                    Clock.System.now().toLocalDateTime(TimeZone.UTC),
-                    "",
-                    "",
-                    mutableListOf()
-                )
+                    title = title,
+                    prize = prize,
+                    date = Clock.System.now().toLocalDateTime(TimeZone.UTC).date,
+                    deadline = deadline,
+                    description = description,
+                    closed = false,
+                    participants = participants
+                ).toDto()
             )
-        }
+        return true
     }
 }

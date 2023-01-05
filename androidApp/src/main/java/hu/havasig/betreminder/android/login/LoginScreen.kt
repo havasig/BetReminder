@@ -37,7 +37,6 @@ import hu.havasig.betreminder.presenter.KMPUserPresenter
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.get
 import org.koin.androidx.compose.koinViewModel
-import org.koin.core.component.getScopeId
 
 @Composable
 fun LoginScreen(

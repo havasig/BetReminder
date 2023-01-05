@@ -1,14 +1,25 @@
 package hu.havasig.betreminder.data
 
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.LocalDateTime
 
-class Bet(
-    val bet: String,
-    val date: LocalDateTime,
-    val deadline: LocalDateTime,
+data class Bet(
+    val title: String,
+    val prize: String,
+    val date: LocalDate,
+    val deadline: LocalDate,
     val description: String,
-    val name: String,
-    val participants: List<String>
+    val closed: Boolean,
+    val participants: List<Participant>,
 ) {
+    fun toDto(): HashMap<String, Any> {
+        return hashMapOf(
+            "title" to title,
+            "prize" to prize,
+            "date" to date,
+            "deadline" to deadline,
+            "description" to description,
+            "closed" to false,
+            "participants" to participants.map { it.toDto() },
+        )
+    }
 }

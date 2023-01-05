@@ -17,9 +17,13 @@ class KMPUserPresenter(private val repository: UserRepository) {
         return repository.loadMe()
     }
 
+    suspend fun getCurrentUser(): DocumentSnapshot? {
+        return repository.getCurrentUser()
+    }
+
     @Throws(NullPointerException::class, CancellationException::class)
-    suspend fun getFriendUserList(): List<DocumentSnapshot> {
-        return repository.getFriendUserList()
+    suspend fun getFriendsOfUser(): List<DocumentSnapshot> {
+        return repository.getFriendsOfUser()
     }
 
     suspend fun getBetParticipants(bet: DocumentSnapshot): List<DocumentSnapshot> {
