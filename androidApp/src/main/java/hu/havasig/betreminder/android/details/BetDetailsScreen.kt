@@ -21,12 +21,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.google.firebase.Timestamp
 import dev.gitlive.firebase.firestore.DocumentSnapshot
 import hu.havasig.betreminder.presenter.KMPBetPresenter
 import hu.havasig.betreminder.presenter.KMPUserPresenter
 import org.koin.androidx.compose.get
-import java.text.SimpleDateFormat
 
 @Composable
 fun BetDetailScreen(
@@ -37,12 +35,9 @@ fun BetDetailScreen(
 ) {
 
     var bet by remember { mutableStateOf<DocumentSnapshot?>(value = null) }
-    var participants by remember { mutableStateOf<List<DocumentSnapshot>>(value = emptyList()) }
-
 
     LaunchedEffect(Unit) {
         bet = betPresenter.getBetById(betId ?: "")
-        bet?.let { participants = userPresenter.getBetParticipants(bet!!) }
     }
 
     Scaffold(
@@ -60,8 +55,8 @@ fun BetDetailScreen(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(text = "Participants: ")
-                    participants.forEach {
-                        Text(text = it.android.data?.get("name")?.toString() ?: "name")
+                    (betObject["participants"] as (List<Map<String, Object>>)).forEach {
+                        Text(text = it["name"].toString())
                     }
                 }
                 Divider(startIndent = 8.dp, thickness = 1.dp, color = Color.Black)
@@ -69,15 +64,9 @@ fun BetDetailScreen(
                 Divider(startIndent = 8.dp, thickness = 1.dp, color = Color.Black)
                 RowItem(title = "Prize:", text = betObject["prize"].toString())
                 Divider(startIndent = 8.dp, thickness = 1.dp, color = Color.Black)
-
-                val date = (betObject["date"] as Timestamp).toDate()
-                val sdf = SimpleDateFormat("MM/dd/yyyy")
-                val formattedDate = sdf.format((betObject["date"] as Timestamp).toDate()).toString()
-                RowItem(title = "Date:", text = formattedDate)
+                RowItem(title = "Date:", text = betObject["date"].toString())
                 Divider(startIndent = 8.dp, thickness = 1.dp, color = Color.Black)
-
-                val formattedDatee = sdf.format((betObject["deadline"] as Timestamp).toDate()).toString()
-                RowItem(title = "Deadline:", text = formattedDatee)
+                RowItem(title = "Deadline:", text = betObject["deadline"].toString())
                 Text(text = "TODO: Státusznak megfelelő footer: waiting for response, i won/lost, accept/decline")
             }
         } ?: Text(text = "Loading...")

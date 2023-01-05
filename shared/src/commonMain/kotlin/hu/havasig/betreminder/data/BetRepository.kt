@@ -6,10 +6,8 @@ import dev.gitlive.firebase.firestore.firestore
 import dev.gitlive.firebase.firestore.where
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
-
 
 interface BetRepository {
 
@@ -39,7 +37,15 @@ class BetRepositoryImpl : BetRepository {
         _bets.clear()
         _bets.addAll(
             _db.collection("bets")
-                .where("participants", arrayContains = userId)
+                .where(
+                    "participants",
+                    arrayContains = hashMapOf(
+                        "id" to userId,
+                        "invite_accepted" to true,
+                        "name" to "asd",
+                        "winner" to null
+                    )
+                )
                 .get()
                 .documents
         )

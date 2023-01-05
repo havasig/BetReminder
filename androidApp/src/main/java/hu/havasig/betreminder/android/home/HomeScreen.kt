@@ -35,6 +35,7 @@ import hu.havasig.betreminder.android.navigation.Screens
 import hu.havasig.betreminder.presenter.KMPBetPresenter
 import org.koin.androidx.compose.get
 import java.text.SimpleDateFormat
+import java.time.LocalDate
 
 @Composable
 fun HomeScreen(
@@ -116,13 +117,7 @@ fun BetRow(
             Column(modifier = Modifier.width(width = Dp(150F))) {
 
                 Text(text = bet["title"].toString())
-
-                val date = (bet["date"] as Timestamp).toDate()
-                val sdf = SimpleDateFormat("MM/dd/yyyy")
-                val formattedDate = sdf.format(date).toString()
-
-
-                Text(text = formattedDate)
+                Text(text = bet["date"].toString())
                 Text(text = bet["description"] as String)
             }
 
