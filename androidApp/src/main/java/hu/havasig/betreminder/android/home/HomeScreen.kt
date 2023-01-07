@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
+import androidx.compose.material.Divider
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -29,13 +30,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.google.firebase.Timestamp
 import dev.gitlive.firebase.firestore.DocumentSnapshot
+import hu.havasig.betreminder.android.BottomNavigation
 import hu.havasig.betreminder.android.navigation.Screens
 import hu.havasig.betreminder.presenter.KMPBetPresenter
 import org.koin.androidx.compose.get
-import java.text.SimpleDateFormat
-import java.time.LocalDate
 
 @Composable
 fun HomeScreen(
@@ -45,15 +44,12 @@ fun HomeScreen(
 
     val bets = produceState(
         initialValue = emptyList<DocumentSnapshot>(),
-        producer = {
-            value = betPresenter.getBets("iFEFVKFU77OhopXp1sjL")
-        }
+        producer = { value = betPresenter.getBets("iFEFVKFU77OhopXp1sjL") }
     )
 
     Scaffold(
-        topBar = {
-            TopAppBar(title = { Text("Bets") })
-        },
+        topBar = { TopAppBar(title = { Text("Bets") }) },
+        bottomBar = { BottomNavigation(navController = navController) },
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
@@ -82,20 +78,8 @@ fun HomeScreen(
             LazyColumn {
                 items(items = bets.value, itemContent = { bet ->
                     BetRow(bet, navController)
+                    Divider(modifier = Modifier.padding(horizontal = 8.dp), thickness = 1.dp, color = Color.Black)
                 })
-            }
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Text(
-                    text = "Home Screen",
-                    fontSize = MaterialTheme.typography.h3.fontSize,
-                    fontWeight = FontWeight.Bold
-                )
             }
         }
     }
@@ -106,9 +90,13 @@ fun BetRow(
     bett: DocumentSnapshot,
     navController: NavController,
 ) {
-    Column(modifier = Modifier.wrapContentHeight()) {
+    Column(
+        modifier = Modifier
+            .wrapContentHeight()
+            .padding(16.dp)
+    ) {
         val bet = bett.android.data!!
-
+        val participants = bet["participants"] as List<HashMap<String, String>>
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -117,6 +105,7 @@ fun BetRow(
             Column(modifier = Modifier.width(width = Dp(150F))) {
 
                 Text(text = bet["title"].toString())
+                Text(text = participants[0]["name"] + " vs " + participants[1]["name"])
                 Text(text = bet["date"].toString())
                 Text(text = bet["description"] as String)
             }

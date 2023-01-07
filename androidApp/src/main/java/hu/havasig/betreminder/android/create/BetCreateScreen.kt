@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import dev.gitlive.firebase.firestore.DocumentSnapshot
+import hu.havasig.betreminder.android.BottomNavigation
 import hu.havasig.betreminder.android.navigation.Screens
 import hu.havasig.betreminder.data.Participant
 import hu.havasig.betreminder.presenter.KMPBetPresenter
@@ -73,7 +74,7 @@ fun BetCreateScreen(
 
     Scaffold(
         topBar = { TopAppBar(title = { Text("New bet") }) },
-        bottomBar = { BottomAppBar(backgroundColor = Color.Green) { Text("BottomAppBar") } }
+        bottomBar = { BottomNavigation(navController = navController) },
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
             Row(

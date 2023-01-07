@@ -91,7 +91,7 @@ fun LoginScreen(
                 try {
                     Auth().createUser(email, password)
                     Toast.makeText(context, "Success", Toast.LENGTH_LONG).show()
-                    navController.navigate(Screens.Home.route)
+                    navController.navigate(Screens.Home.route) { popUpTo(0) }
                 } catch (e: Exception) {
                     Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
                 }
@@ -106,7 +106,7 @@ fun LoginScreen(
                     Toast.makeText(context, "Success", Toast.LENGTH_LONG).show()
                     val me = presenter.loadMe()
                     betPresenter.loadMyBets(me.id)
-                    navController.navigate(Screens.Home.route)
+                    navController.navigate(Screens.Home.route) { popUpTo(0) }
                 } catch (e: Exception) {
                     Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
                     Log.e("LOGIN_ERROR", e.message ?: "login error")
@@ -115,6 +115,5 @@ fun LoginScreen(
         }) {
             Text(text = "login")
         }
-        Text(text = presenter.sayHello() + "\n\n" + viewModel.sayHello() + "\n\n")
     }
 }

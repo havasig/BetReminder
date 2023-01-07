@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import dev.gitlive.firebase.firestore.DocumentSnapshot
+import hu.havasig.betreminder.android.BottomNavigation
 import hu.havasig.betreminder.presenter.KMPBetPresenter
 import hu.havasig.betreminder.presenter.KMPUserPresenter
 import org.koin.androidx.compose.get
@@ -42,7 +43,7 @@ fun BetDetailScreen(
 
     Scaffold(
         topBar = { TopAppBar(title = { Text(bet?.android?.data?.get("title")?.toString() ?: "Bet details") }) },
-        bottomBar = { BottomAppBar(backgroundColor = Color.Green) { Text("BottomAppBar") } }
+        bottomBar = { BottomNavigation(navController = navController) },
     ) {
 
         bet?.android?.data?.let { betObject ->
